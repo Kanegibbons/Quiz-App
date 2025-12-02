@@ -1,2 +1,4 @@
 # Quiz-App
-[![View Live Demo](https://github.com/Kanegibbons/Quiz-App)
+## Live Demo
+https://kanegibbons.github.io/Quiz-App/
+
