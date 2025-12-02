@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<!-- Quiz App -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Montserrat", sans-serif;
+    }
+    body {
+      display: flex;
+      padding: 15px;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #5145BA;
+    }
+    :where(.config-container, .quiz-container, .result-container) {
+     display: none;
+     background: #fff;
+     border-radius: 8px;
+     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.13); 
+    }
+   .config-container {
+     width: 415px;
+     padding: 25px;
+     text-align: center;
+   }
+  .config-container .config-title {
+    font-size: 1.31rem;
+  }
+  .config-container .config-option {
+    margin-top: 25px;
+  }
+  .config-option .option-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .config-option .category-options {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .config-option .question-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0 30px;
+    justify-content: center;
+  }
+  .config-option button {
+    padding: 12px;
+    font-size: 0.938rem;
+    font-weight: 500;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #9B8FFF;
+    transition: 0.3s ease;
+  }
+ .config-option button.active {
+   color: #5145Ba;
+   border-color: #5145BA;
+   background: #dfdafd;
+ }
+ .config-option button:hover, 
+ .quiz-content .answer-option:hover {
+   background: #dad5fd;
+ }
+ .question-options button {
+   flex: 1 1 10%;
+ }
+.config-container .start-quiz-btn, 
+.quiz-footer .next-question-btn, 
+.result-container .try-again-btn {
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 30px;
+  font-weight: 500;
+  background: #5145BA;
+  padding: 13px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+.quiz-footer .next-question-btn {
+  margin-top: 2px;
+}
+.config-container .start-quiz-btn:hover, 
+.quiz-footer .next-question-btn:hover, 
+.result-container .try-again-btn:hover {
+  background: #403795;
+}
+.quiz-container {
+  display: block;
+  width: 480px;
+}
+.quiz-container .quiz-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 25px;
+  justify-content: space-between;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.09);
+}
+.quiz-header .quiz-title {
+  font-size: 1.43rem;
+  font-weight: 700;
+}
+.quiz-header .quiz-timer {
+  display: flex;
+  width: 70px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  padding: 7px 9px;
+  border-radius: 6px;
+  background: #32313C;
+}
+.quiz-header .quiz-timer span {
+  font-size: 1.4rem;
+}
+.quiz-container .quiz-content {
+  padding: 20px 25px 25px;
+}
+.quiz-content .question-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.quiz-content .answer-options {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  list-style: none;
+  margin-top: 20px;
+}
+.quiz-content .answer-option {
+  display: flex;
+  align-items: center;
+  padding: 13px 16px;
+  background: #F3F1FF;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  justify-content: space-between;
+  border: 1px solid #B5ACFF;
+  transition: 0.3s ease;
+}
+.quiz-content .answer-option span {
+  display: block;
+  flex-shrink: 0;
+  margin: -4px -3px -4px 12px;
+}
+.quiz-content .answer-option.correct{
+  border-color: #B7E1C1;
+  background: #D4EDDA;
+  color: #155724;
+}
+.quiz-content .answer-option.incorrect{
+  border-color: #F4BEC3;
+  background: #F8D7DA;
+  color: #721C24;
+}
+.quiz-container .quiz-footer {
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #c6c6c6;
+}
+.quiz-footer .quiz-status {
+  font-weight: 500;
+}
+.quiz-footer .quiz-status b, 
+.result-container .result-message b {
+  font-weight: 600;
+}
+.quiz-footer .next-question-btn {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 9px 17px;
+}
+.result-container {
+  text-align: center;
+  padding: 40px;
+  width: 410px;
+}
+.result-container .result-img {
+  width: 110px;
+}
+.result-container .result-title {
+  margin-top: 30px;
+}
+.result-container .result-message {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-top: 15px;
+}
+.result-container .try-again-btn {
+  margin-top: 30px;
+  padding: 12px 20px;
+}
+  </style>
+</head>
+<body>
+  <!-- Quiz Configuration Container -->
+  <div class="config-container">
+    <h2 class="config-title">Quiz Configuration</h2>
+    
+    <div class="config-option">
+      <h4 class="option-title">Select Category</h4>
+      <div class="category-options">
+        <button class="category-option active">programming</button>
+        <button class="category-option">geography</button>
+        <button class="category-option">mathematics</button>
+        <button class="category-option">entertainment</button>
+      </div>
+    </div>
+    
+    <div class="config-option">
+      <h4 class="option-title">No. of Questions</h4>
+      <div class="question-options">
+        <button class="question-option">5</button>
+        <button class="question-option active">10</button>
+        <button class="question-option">15</button>
+        <button class="question-option">20</button>
+        <button class="question-option">25</button>
+      </div>
+    </div>
+    
+    <button class="start-quiz-btn">Start Quiz</button>
+  </div>
+  
+  <!-- Quiz Container -->
+  <div class="quiz-container">
+    <header class="quiz-header">
+      <h2 class="quiz-title">Quiz Application</h2>
+      <div class="quiz-timer">
+        <span class="material-symbols-rounded">timer</span>
+        <p class="time-duration">15s</p>
+      </div>
+    </header>
+    
+    <div class="quiz-content">
+      <h1 class="question-text"></h1>
+      <ul class="answer-options"></ul>
+    </div>
+    
+    <div class="quiz-footer">
+      <p class="question-status"><b>2</b> of <b>10</b> Questions</p>
+      <button class="next-question-btn">
+        Next
+        <span class="material-symbols-rounded">arrow_right_alt</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Result Container -->
+  <div class="result-container">
+    <img src="https://uploads.onecompiler.io/436um5srr/3y5x8jr6s/quiz-over.png" class="result-img">
+    <h2 class="result-title">Quiz Completed!</h2>
+    <p class="result-message">You answered <b>3</b> out of <b>5</b> questions correctly. Great effort!</p>
+    <button class="try-again-btn">Try Again</button>
+  </div>
+  
+  <!-- JavaScript -->
+  <script src="questions.js"></script>
+  <script>
+  // --- Initial Setup and DOM Elements (same as before) ---
+    const configContainer = document.querySelector(".config-container");
+    const quizContainer = document.querySelector(".quiz-container");
+    const resultContainer = document.querySelector(".result-container");
+    
+    const categoryOptions = document.querySelectorAll(".category-option");
+    const questionOptions = document.querySelectorAll(".question-option");
+    const startQuizBtn = document.querySelector(".start-quiz-btn");
+    const tryAgainBtn = document.querySelector(".try-again-btn");
+    
+    const answerOptionsList = document.querySelector(".answer-options");
+    const nextQuestionBtn = document.querySelector(".next-question-btn");
+    const questionText = document.querySelector(".question-text");
+    const quizStatus = document.querySelector(".question-status");
+    const resultMessage = document.querySelector(".result-message");
+    const timeDurationEl = document.querySelector(".time-duration");
+
+    // --- State Variables (same as before) ---
+    let selectedCategory = "programming";
+    let totalQuestions = 10;
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let quizQuestions = [];
+    let isAnswered = false;
+    let timer;
+    const TIME_LIMIT = 15; // seconds
+
+    // --- Utility Functions (same as before) ---
+
+    const showContainer = (container) => {
+      [configContainer, quizContainer, resultContainer].forEach(c => {
+        c.style.display = (c === container) ? 'block' : 'none';
+      });
+    };
+
+    const shuffleArray = (array) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    // --- Event Handlers for Configuration (same as before) ---
+
+    categoryOptions.forEach(btn => {
+      btn.addEventListener("click", () => {
+        categoryOptions.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedCategory = btn.textContent;
+      });
+    });
+
+    questionOptions.forEach(btn => {
+      btn.addEventListener("click", () => {
+        questionOptions.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        totalQuestions = parseInt(btn.textContent);
+      });
+    });
+
+    // --- Quiz Core Logic (Updated handleAnswer) ---
+
+    const startQuiz = () => {
+      const categoryData = questions.find(cat => cat.category === selectedCategory);
+      if (!categoryData) {
+        alert(`No questions found for category: ${selectedCategory}`);
+        return;
+      }
+      
+      quizQuestions = [...categoryData.questions];
+      shuffleArray(quizQuestions);
+      quizQuestions = quizQuestions.slice(0, totalQuestions);
+
+      currentQuestionIndex = 0;
+      score = 0;
+      isAnswered = false;
+      nextQuestionBtn.style.display = "none";
+      
+      showContainer(quizContainer);
+      renderQuestion();
+    };
+
+    const startTimer = () => {
+      let timeRemaining = TIME_LIMIT;
+      timeDurationEl.textContent = `${timeRemaining}s`;
+
+      clearInterval(timer);
+      timer = setInterval(() => {
+        timeRemaining--;
+        timeDurationEl.textContent = `${timeRemaining}s`;
+
+        if (timeRemaining <= 0) {
+          clearInterval(timer);
+          handleTimeout();
+        }
+      }, 1000);
+    };
+    
+    const handleTimeout = () => {
+        clearInterval(timer);
+        isAnswered = true;
+        
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        const correctOptionEl = answerOptionsList.children[currentQuestion.correctAnswer];
+        if(correctOptionEl) {
+            correctOptionEl.classList.add("correct");
+        }
+        
+        Array.from(answerOptionsList.children).forEach(option => {
+            // Remove the click listener (see note below)
+            const newOption = option.cloneNode(true);
+            option.parentNode.replaceChild(newOption, option);
+        });
+
+        nextQuestionBtn.style.display = "inline-flex";
+    }
+
+    // *** FIX APPLIED HERE ***
+    const handleAnswer = (event) => {
+      if (isAnswered) return;
+
+      clearInterval(timer);
+      isAnswered = true;
+      const selectedOption = event.target;
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+      
+      // Determine the index of the clicked option based on its position in the list
+      const selectedIndex = Array.from(answerOptionsList.children).indexOf(selectedOption);
+
+      const isCorrect = currentQuestion.correctAnswer === selectedIndex;
+
+      selectedOption.classList.add(isCorrect ? "correct" : "incorrect");
+      
+      if (!isCorrect) {
+          const correctOptionEl = answerOptionsList.children[currentQuestion.correctAnswer];
+          if(correctOptionEl) {
+              correctOptionEl.classList.add("correct");
+          }
+      }
+
+      if (isCorrect) {
+        score++;
+      }
+      
+      // Disable all options by replacing them with clones (removes all listeners efficiently)
+      Array.from(answerOptionsList.children).forEach(option => {
+            const newOption = option.cloneNode(true);
+            option.parentNode.replaceChild(newOption, option);
+        });
+
+      nextQuestionBtn.style.display = "inline-flex";
+    };
+
+    const renderQuestion = () => {
+      if (currentQuestionIndex >= quizQuestions.length) {
+        showResult();
+        return;
+      }
+      
+      const q = quizQuestions[currentQuestionIndex];
+      
+      isAnswered = false;
+      nextQuestionBtn.style.display = "none";
+      answerOptionsList.innerHTML = "";
+      
+      questionText.textContent = q.question;
+      quizStatus.innerHTML = `<b>${currentQuestionIndex + 1}</b> of <b>${quizQuestions.length}</b> Questions`;
+
+      // Render Options
+      // It's assumed that the 'correctAnswer' index corresponds to the unshuffled 'options' array.
+      // If you shuffle options here, you must adjust the 'correctAnswer' index accordingly.
+      // For simplicity, we'll keep the options order as they appear in the question object.
+      
+      q.options.forEach((optionText, index) => {
+        const li = document.createElement("li");
+        li.classList.add("answer-option");
+        li.textContent = optionText;
+        answerOptionsList.appendChild(li);
+        
+        // *** FIX APPLIED HERE: Attach handleAnswer as a callback function ***
+        li.addEventListener("click", handleAnswer);
+      });
+      
+      startTimer();
+    };
+    
+    const nextQuestion = () => {
+        currentQuestionIndex++;
+        renderQuestion();
+    }
+
+    const showResult = () => {
+      clearInterval(timer);
+      resultMessage.innerHTML = `You answered <b>${score}</b> out of <b>${quizQuestions.length}</b> questions correctly. Great effort!`;
+      showContainer(resultContainer);
+    };
+    
+    // --- Initial Setup and Event Listeners ---
+    
+    // *** FIX APPLIED HERE: Initialize the view to the configuration screen ***
+    showContainer(configContainer);
+
+    startQuizBtn.addEventListener("click", startQuiz);
+    nextQuestionBtn.addEventListener("click", nextQuestion);
+    tryAgainBtn.addEventListener("click", () => showContainer(configContainer));
+  </script>
+</body>
+</html>
